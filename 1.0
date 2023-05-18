@@ -1,1 +1,69 @@
+pip install flask
+from flask import Flask, render_template, request
+import hashlib
 
+app = Flask(__name__)
+
+def generar_resultados(semilla, valor_ronda, numero_ronda):
+    # Generar el valor de la siguiente ronda
+        resultado_siguiente = (valor_ronda * numero_ronda) % 10.01
+            
+                # Generar el valor de la segunda siguiente ronda
+                    semilla_concatenada = semilla + str(resultado_siguiente)
+                        hash_resultante = hashlib.sha512(semilla_concatenada.encode()).hexdigest()
+                            resultado_siguiente2 = int(hash_resultante, 16) % 10.01
+                                
+                                    return resultado_siguiente, resultado_siguiente2
+
+                                    @app.route('/', methods=['GET', 'POST'])
+                                    def index():
+                                        if request.method == 'POST':
+                                                semilla = request.form['semilla']
+                                                        valor_ronda = float(request.form['valor_ronda'])
+                                                                numero_ronda = int(request.form['numero_ronda'])
+                                                                        
+                                                                                siguiente_ronda, siguiente_ronda2 = generar_resultados(semilla, valor_ronda, numero_ronda)
+                                                                                        
+                                                                                                return render_template('resultados.html', siguiente_ronda=siguiente_ronda, siguiente_ronda2=siguiente_ronda2)
+                                                                                                    
+                                                                                                        return render_template('index.html')
+
+                                                                                                        if __name__ == '__main__':
+                                                                                                            app.run()
+                                                                                                            idex.html
+                                                                                                            <!DOCTYPE html>
+                                                                                                            <html>
+                                                                                                            <head>
+                                                                                                                <title>Aplicación de Predicción de Rondas</title>
+                                                                                                                </head>
+                                                                                                                <body>
+                                                                                                                    <h1>Aplicación de Predicción de Rondas</h1>
+                                                                                                                        <form method="POST" action="/">
+                                                                                                                                <label for="semilla">Semilla Hash 512:</label>
+                                                                                                                                        <input type="text" name="semilla" required><br><br>
+                                                                                                                                                
+                                                                                                                                                        <label for="valor_ronda">Valor de la Ronda:</label>
+                                                                                                                                                                <input type="number" name="valor_ronda" step="0.01" required><br><br>
+                                                                                                                                                                        
+                                                                                                                                                                                <label for="numero_ronda">Número de la Ronda:</label>
+                                                                                                                                                                                        <input type="number" name="numero_ronda" required><br><br>
+                                                                                                                                                                                                
+                                                                                                                                                                                                        <input type="submit" value="Generar Resultados">
+                                                                                                                                                                                                            </form>
+                                                                                                                                                                                                            </body>
+                                                                                                                                                                                                            </html>
+
+                                                                                                                                                                                                            resultados.html
+                                                                                                                                                                                                            <!DOCTYPE html>
+                                                                                                                                                                                                            <html>
+                                                                                                                                                                                                            <head>
+                                                                                                                                                                                                                <title>Resultados de la Predicción</title>
+                                                                                                                                                                                                                </head>
+                                                                                                                                                                                                                <body>
+                                                                                                                                                                                                                    <h1>Resultados de la Predicción</h1>
+                                                                                                                                                                                                                        <p>Resultado de la siguiente ronda: {{ siguiente_ronda }}</p>
+                                                                                                                                                                                                                            <p>Resultado de la segunda siguiente ronda: {{ siguiente_ronda2 }}</p>
+                                                                                                                                                                                                                            </body>
+                                                                                                                                                                                                                            </html>
+                                                                                                                                                                                                                            app python.py
+                                                                                                                                                                                                                            
